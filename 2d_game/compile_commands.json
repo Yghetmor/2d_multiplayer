@@ -1,0 +1,17 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-w",
+      "-I",
+      "/usr/local/include/",
+      "-o",
+      "bin/2d_game",
+      "src/main.cpp"
+    ],
+    "directory": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game",
+    "file": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/src/main.cpp",
+    "output": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/bin/2d_game"
+  }
+]

@@ -1,11 +1,12 @@
 OBJS = \
-	src/main.cpp
+	src/main.cpp \
+	src/game.cpp \
 
 CC = g++
 
-COMPILER_FLAGS = -w
+COMPILER_FLAGS = -w -I /usr/local/include/
 
-LINKER_FLAGS = -lSDL2
+LINKER_FLAGS = -lSDL2 -lSDL2_image
 
 OBJ_NAME = 2d_game
 

@@ -1,7 +1,15 @@
 #include <iostream>
+#include "game.h"
 
-int main()
+int main(int argc, char* args[])
 {
-    std::cout << "Hello world!" << std::endl;
+	Game game;
+
+	if (game.init("Game", SCREEN_WIDTH, SCREEN_HEIGHT))
+	{
+		game.gameLoop();
+	}
+
+	game.shutdown();
     return 0;
 }
