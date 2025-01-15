@@ -1,6 +1,7 @@
 OBJS = \
 	src/main.cpp \
 	src/game.cpp \
+	src/entity.cpp \
 
 CC = g++
 

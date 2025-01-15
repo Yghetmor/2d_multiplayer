@@ -1,4 +1,6 @@
 #include "game.h"
+#include "entity.h"
+#include "utils.h"
 
 bool Game::init(const char* title, int width, int height)
 {
@@ -32,6 +34,7 @@ bool Game::init(const char* title, int width, int height)
 	}
 
 	m_clock = new Clock;
+    m_entity = new Entity(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 40, 40, loadTexture("assets/player.png"));
 
 	return true;
 }
@@ -108,6 +111,8 @@ void Game::draw()
 {
 	SDL_SetRenderDrawColor(m_renderer, 40, 40, 40, 0xFF);
 	SDL_RenderClear(m_renderer);
+
+    m_entity->render(m_renderer);
 
 	SDL_RenderPresent(m_renderer);
 }

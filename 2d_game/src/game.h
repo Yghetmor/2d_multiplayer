@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include "clock.h"
+#include "entity.h"
 #include "utils.h"
 
 class Game
@@ -25,6 +26,8 @@ private:
 	SDL_Window* m_window{ nullptr };
 	SDL_Renderer* m_renderer{ nullptr };
 	Clock* m_clock;
+
+    Entity* m_entity;
 
 	bool isPaused{ false };
 };
