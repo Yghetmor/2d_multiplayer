@@ -105,6 +105,7 @@ void Game::handleEvent()
 
 void Game::update()
 {
+    m_entity->update_position();
 }
 
 void Game::draw()

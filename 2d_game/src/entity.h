@@ -10,12 +10,13 @@ public:
     Entity(unsigned int pos_x, unsigned int pos_y, unsigned int width, unsigned int height, SDL_Texture* texture);
     ~Entity();
 
-    void move();
+    void update_position();
     void render(SDL_Renderer* renderer);
 
 protected:
     unsigned int m_pos_x, m_pos_y;
     unsigned int m_width, m_height;
+    double m_angle = 0;
     int m_vel_x, m_vel_y;
 
     SDL_Rect m_rect;

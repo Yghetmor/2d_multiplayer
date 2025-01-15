@@ -1,4 +1,8 @@
 #include "entity.h"
+#include <SDL2/SDL_render.h>
+#include <cmath>
+#include <iostream>
+#include "utils.h"
 
 Entity::Entity(unsigned int pos_x, unsigned int pos_y, unsigned int width, unsigned int height, SDL_Texture* texture)
     : m_pos_x{pos_x - width / 2}, m_pos_y{pos_y - height / 2}, m_width{width}, m_height{height}, m_vel_x{0}, m_vel_y{0}, m_texture{texture}
@@ -15,7 +19,64 @@ Entity::~Entity()
     }
 }
 
+void Entity::update_position()
+{
+    int mouse_x, mouse_y = 0;
+    double calc_angle = 0.0;
+    SDL_GetMouseState(&mouse_x, &mouse_y);
+
+    if (m_pos_y == mouse_y)
+    {
+        if (m_pos_x > mouse_x)
+        {
+            calc_angle = 270.0;
+        }
+        else 
+        {
+            calc_angle = 90.0;
+        }
+    }
+    else 
+    {
+        if (m_pos_x < mouse_x)
+        {
+            if (m_pos_y < mouse_y)
+            {
+                double arctan = atan((double)(mouse_x - m_pos_x) / (double)(mouse_y - m_pos_y));
+                calc_angle = 180.0 - (arctan * 180.0 / PI);
+            }
+            else 
+            {
+                double arctan = atan((double)(mouse_x - m_pos_x) / (double)(m_pos_y - mouse_y));
+                calc_angle = arctan * 180.0 / PI;
+            }
+        }
+        else 
+        {
+            if (m_pos_y < mouse_y)
+            {
+                double arctan = atan((double)(m_pos_x - mouse_x) / (double)(mouse_y - m_pos_y));
+                calc_angle = 180.0 + (arctan * 180.0 / PI);
+            }
+            else 
+            {
+                double arctan = atan((double)(m_pos_x - mouse_x) / (double)(m_pos_y - mouse_y));
+                calc_angle = 360.0 - (arctan * 180.0 / PI);
+            }
+        }
+    }
+
+    if (calc_angle < 180.0)
+    {
+        m_angle = calc_angle + 180.0;
+    }
+    else 
+    {
+        m_angle = calc_angle - 180.0;
+    }
+}
+
 void Entity::render(SDL_Renderer* renderer)
 {
-    SDL_RenderCopyEx(renderer, m_texture, nullptr, &m_rect, 0, nullptr, SDL_FLIP_NONE);
+    SDL_RenderCopyEx(renderer, m_texture, nullptr, &m_rect, m_angle, nullptr, SDL_FLIP_NONE);
 }
