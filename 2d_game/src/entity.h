@@ -1,6 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include "camera.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -10,8 +11,10 @@ public:
     Entity(unsigned int pos_x, unsigned int pos_y, unsigned int width, unsigned int height, SDL_Texture* texture);
     ~Entity();
 
-    void update_position();
-    void render(SDL_Renderer* renderer);
+    void update_position(Camera* camera);
+    void render(SDL_Renderer* renderer, Camera* camera);
+    unsigned int get_x() { return m_pos_x; }
+    unsigned int get_y() { return m_pos_y; }
 
 protected:
     unsigned int m_pos_x, m_pos_y;

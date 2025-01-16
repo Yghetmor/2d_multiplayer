@@ -34,7 +34,8 @@ bool Game::init(const char* title, int width, int height)
 	}
 
 	m_clock = new Clock;
-    m_entity = new Entity(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 40, 40, loadTexture("assets/player.png"));
+    m_map = new Map(loadTexture("assets/map.png"));
+    m_entity = new Entity(MAP_WIDTH / 2, MAP_HEIGHT / 2, 40, 40, loadTexture("assets/player.png"));
 
 	return true;
 }
@@ -105,7 +106,7 @@ void Game::handleEvent()
 
 void Game::update()
 {
-    m_entity->update_position();
+    m_entity->update_position(&m_camera);
 }
 
 void Game::draw()
@@ -113,7 +114,9 @@ void Game::draw()
 	SDL_SetRenderDrawColor(m_renderer, 40, 40, 40, 0xFF);
 	SDL_RenderClear(m_renderer);
 
-    m_entity->render(m_renderer);
+    m_map->render(m_renderer, &m_camera);
+
+    m_entity->render(m_renderer, &m_camera);
 
 	SDL_RenderPresent(m_renderer);
 }

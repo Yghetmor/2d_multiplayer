@@ -19,15 +19,18 @@ Entity::~Entity()
     }
 }
 
-void Entity::update_position()
+void Entity::update_position(Camera* camera)
 {
     int mouse_x, mouse_y = 0;
     double calc_angle = 0.0;
+    SDL_Rect* cam_rect = camera->get_cam();
+    int normalized_x = m_pos_x - cam_rect->x;
+    int normalized_y = m_pos_y - cam_rect->y;
     SDL_GetMouseState(&mouse_x, &mouse_y);
 
-    if (m_pos_y == mouse_y)
+    if (normalized_y == mouse_y)
     {
-        if (m_pos_x > mouse_x)
+        if (normalized_x > mouse_x)
         {
             calc_angle = 270.0;
         }
@@ -38,29 +41,29 @@ void Entity::update_position()
     }
     else 
     {
-        if (m_pos_x < mouse_x)
+        if (normalized_x < mouse_x)
         {
-            if (m_pos_y < mouse_y)
+            if (normalized_y < mouse_y)
             {
-                double arctan = atan((double)(mouse_x - m_pos_x) / (double)(mouse_y - m_pos_y));
+                double arctan = atan((double)(mouse_x - normalized_x) / (double)(mouse_y - normalized_y));
                 calc_angle = 180.0 - (arctan * 180.0 / PI);
             }
             else 
             {
-                double arctan = atan((double)(mouse_x - m_pos_x) / (double)(m_pos_y - mouse_y));
+                double arctan = atan((double)(mouse_x - normalized_x) / (double)(normalized_y - mouse_y));
                 calc_angle = arctan * 180.0 / PI;
             }
         }
         else 
         {
-            if (m_pos_y < mouse_y)
+            if (normalized_y < mouse_y)
             {
-                double arctan = atan((double)(m_pos_x - mouse_x) / (double)(mouse_y - m_pos_y));
+                double arctan = atan((double)(normalized_x - mouse_x) / (double)(mouse_y - normalized_y));
                 calc_angle = 180.0 + (arctan * 180.0 / PI);
             }
             else 
             {
-                double arctan = atan((double)(m_pos_x - mouse_x) / (double)(m_pos_y - mouse_y));
+                double arctan = atan((double)(normalized_x - mouse_x) / (double)(normalized_y - mouse_y));
                 calc_angle = 360.0 - (arctan * 180.0 / PI);
             }
         }
@@ -76,7 +79,8 @@ void Entity::update_position()
     }
 }
 
-void Entity::render(SDL_Renderer* renderer)
+void Entity::render(SDL_Renderer* renderer, Camera* camera)
 {
-    SDL_RenderCopyEx(renderer, m_texture, nullptr, &m_rect, m_angle, nullptr, SDL_FLIP_NONE);
+    SDL_Rect render_rect = { (int)m_pos_x - camera->get_cam()->x, (int)m_pos_y - camera->get_cam()->y, (int)m_width, (int)m_height };
+    SDL_RenderCopyEx(renderer, m_texture, nullptr, &render_rect, m_angle, nullptr, SDL_FLIP_NONE);
 }

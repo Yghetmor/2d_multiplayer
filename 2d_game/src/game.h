@@ -4,8 +4,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include "camera.h"
 #include "clock.h"
 #include "entity.h"
+#include "map.h"
 #include "utils.h"
 
 class Game
@@ -25,9 +27,11 @@ private:
 
 	SDL_Window* m_window{ nullptr };
 	SDL_Renderer* m_renderer{ nullptr };
-	Clock* m_clock;
+	Clock* m_clock{ nullptr };
+    Map* m_map{ nullptr };
+    Camera m_camera{};
 
-    Entity* m_entity;
+    Entity* m_entity{ nullptr };
 
 	bool isPaused{ false };
 };
