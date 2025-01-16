@@ -8,7 +8,7 @@ class Camera
 {
 public:
 
-    void update();
+    void update(unsigned int player_x, unsigned int player_y, unsigned int player_width, unsigned int player_height);
     SDL_Rect* get_cam();
 
 private:

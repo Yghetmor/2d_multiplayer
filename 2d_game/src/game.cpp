@@ -35,7 +35,7 @@ bool Game::init(const char* title, int width, int height)
 
 	m_clock = new Clock;
     m_map = new Map(loadTexture("assets/map.png"));
-    m_entity = new Entity(MAP_WIDTH / 2, MAP_HEIGHT / 2, 40, 40, loadTexture("assets/player.png"));
+    m_entity = new Entity(MAP_WIDTH / 2, MAP_HEIGHT / 2, 40, 40, PLAYER_VELOCITY, loadTexture("assets/player.png"));
 
 	return true;
 }
@@ -101,12 +101,15 @@ void Game::handleEvent()
 	{
 		if (event.type == SDL_QUIT)
 			isRunning = false;
+
+        m_entity->handle_event(event);
 	}
 }
 
 void Game::update()
 {
     m_entity->update_position(&m_camera);
+    m_camera.update(m_entity->get_x(), m_entity->get_y(), m_entity->get_width(), m_entity->get_height());
 }
 
 void Game::draw()
