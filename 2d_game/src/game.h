@@ -6,8 +6,8 @@
 #include <iostream>
 #include "camera.h"
 #include "clock.h"
-#include "entity.h"
 #include "map.h"
+#include "player.h"
 #include "utils.h"
 
 class Game
@@ -31,7 +31,7 @@ private:
     Map* m_map{ nullptr };
     Camera m_camera{};
 
-    Entity* m_entity{ nullptr };
+    Player* m_player{ nullptr };
 
 	bool isPaused{ false };
 };

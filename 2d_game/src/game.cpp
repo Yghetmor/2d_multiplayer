@@ -35,7 +35,7 @@ bool Game::init(const char* title, int width, int height)
 
 	m_clock = new Clock;
     m_map = new Map(loadTexture("assets/map.png"));
-    m_entity = new Entity(MAP_WIDTH / 2, MAP_HEIGHT / 2, 40, 40, PLAYER_VELOCITY, loadTexture("assets/player.png"));
+    m_player = new Player(loadTexture("assets/player.png"));
 
 	return true;
 }
@@ -68,6 +68,12 @@ void Game::shutdown()
 
 	delete m_clock;
 	m_clock = nullptr;
+
+    delete m_map;
+    m_map = nullptr;
+
+    delete m_player;
+    m_player = nullptr;
 
 	SDL_Quit();
 }
@@ -102,14 +108,14 @@ void Game::handleEvent()
 		if (event.type == SDL_QUIT)
 			isRunning = false;
 
-        m_entity->handle_event(event);
+        m_player->handle_event(event);
 	}
 }
 
 void Game::update()
 {
-    m_entity->update_position(&m_camera);
-    m_camera.update(m_entity->get_x(), m_entity->get_y(), m_entity->get_width(), m_entity->get_height());
+    m_player->update_position(&m_camera);
+    m_camera.update(m_player->get_x(), m_player->get_y(), m_player->get_width(), m_player->get_height());
 }
 
 void Game::draw()
@@ -119,7 +125,7 @@ void Game::draw()
 
     m_map->render(m_renderer, &m_camera);
 
-    m_entity->render(m_renderer, &m_camera);
+    m_player->render(m_renderer, &m_camera);
 
 	SDL_RenderPresent(m_renderer);
 }

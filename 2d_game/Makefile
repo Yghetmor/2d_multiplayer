@@ -4,6 +4,7 @@ OBJS = \
 	src/entity.cpp \
 	src/camera.cpp \
 	src/map.cpp \
+	src/player.cpp \
 
 CC = g++
 
