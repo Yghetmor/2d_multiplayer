@@ -11,7 +11,6 @@ public:
     Entity(unsigned int pos_x, unsigned int pos_y, unsigned int width, unsigned int height, unsigned int velocity, SDL_Texture* texture);
     ~Entity();
 
-    void update_position();
     void render(SDL_Renderer* renderer, Camera *camera);
     unsigned int get_x() { return m_pos_x; }
     unsigned int get_y() { return m_pos_y; }

@@ -11,6 +11,7 @@ public:
 
     void update_position(Camera* camera);
     void handle_event(SDL_Event& e);
+    double get_angle();
 
 private:
     static const unsigned int s_init_pos_x = MAP_WIDTH / 2;

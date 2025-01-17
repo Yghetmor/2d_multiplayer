@@ -10,6 +10,7 @@
 #include "map.h"
 #include "monster.h"
 #include "player.h"
+#include "projectile.h"
 #include "utils.h"
 
 class Game
@@ -35,6 +36,9 @@ private:
 
     Player* m_player{ nullptr };
     std::vector<Monster*> m_monsters{};
+    std::vector<Projectile*> m_projectiles{};
+
+    SDL_Texture* m_projectile_texture{ nullptr };
 
 	bool isPaused{ false };
 };

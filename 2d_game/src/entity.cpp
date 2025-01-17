@@ -2,7 +2,6 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_render.h>
 #include <cmath>
-#include <iostream>
 #include "utils.h"
 
 Entity::Entity(unsigned int pos_x, unsigned int pos_y, unsigned int width, unsigned int height, unsigned int velocity, SDL_Texture* texture)
@@ -18,41 +17,6 @@ Entity::~Entity()
         SDL_DestroyTexture( m_texture );
         m_texture = nullptr;
     }
-}
-
-void Entity::update_position()
-{
-    if (m_vel_x != 0 && m_vel_y != 0)
-    {
-        m_pos_x += (float)m_vel_x * COS_45;
-        m_pos_y += (float)m_vel_y * COS_45;
-    }
-    else
-    {
-        m_pos_x += m_vel_x;
-        m_pos_y += m_vel_y;
-    }
-
-    if (m_pos_x < 50)
-    {
-        m_pos_x = 50;
-    }
-    else if (m_pos_x > MAP_WIDTH - 50 - m_width)
-    {
-        m_pos_x = MAP_WIDTH - 50 - m_width;
-    }
-
-    if (m_pos_y < 50)
-    {
-        m_pos_y = 50;
-    }
-    else if (m_pos_y > MAP_HEIGHT - 50 - m_height)
-    {
-        m_pos_y = MAP_HEIGHT - 50 - m_height;
-    }
-
-    m_rect.x = m_pos_x;
-    m_rect.y = m_pos_y;
 }
 
 void Entity::render(SDL_Renderer* renderer, Camera *camera)

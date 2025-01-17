@@ -1,6 +1,9 @@
 #include "game.h"
 #include "entity.h"
 #include "utils.h"
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_mouse.h>
+#include <SDL2/SDL_render.h>
 
 bool Game::init(const char* title, int width, int height)
 {
@@ -37,6 +40,8 @@ bool Game::init(const char* title, int width, int height)
     m_map = new Map(loadTexture("assets/map.png"));
     m_player = new Player(loadTexture("assets/player.png"));
     m_monsters.push_back(new Monster(100, 100, loadTexture("assets/monster.png")));
+
+    m_projectile_texture = loadTexture("assets/projectile.png");
 
 	return true;
 }
@@ -85,6 +90,17 @@ void Game::shutdown()
         }
     }
 
+    for (auto projectile : m_projectiles)
+    {
+        if (projectile != nullptr)
+        {
+            delete projectile;
+            projectile = nullptr;
+        }
+    }
+
+    SDL_DestroyTexture(m_projectile_texture);
+
 	SDL_Quit();
 }
 
@@ -116,7 +132,13 @@ void Game::handleEvent()
 	while (SDL_PollEvent(&event))
 	{
 		if (event.type == SDL_QUIT)
+        {
 			isRunning = false;
+        }
+        else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
+        {
+            m_projectiles.push_back(new Projectile(m_player, m_projectile_texture));
+        }
 
         m_player->handle_event(event);
 	}
@@ -127,10 +149,23 @@ void Game::update()
     m_player->update_position(&m_camera);
     m_camera.update(m_player->get_x(), m_player->get_y(), m_player->get_width(), m_player->get_height());
 
-    for (auto monster : m_monsters)
+    for (auto& monster : m_monsters)
     {
         if (monster != nullptr)
             monster->update_position(m_player);
+    }
+
+    for (auto& projectile : m_projectiles)
+    {
+        if (projectile != nullptr)
+        {
+            projectile->update_position();
+            if (!projectile->is_alive())
+            {
+                delete projectile;
+                projectile = nullptr;
+            }
+        }
     }
 }
 
@@ -147,6 +182,12 @@ void Game::draw()
     {
         if (monster != nullptr)
             monster->render(m_renderer, &m_camera);
+    }
+
+    for (auto projectile : m_projectiles)
+    {
+        if (projectile != nullptr)
+            projectile->render(m_renderer, &m_camera);
     }
 
 	SDL_RenderPresent(m_renderer);

@@ -6,6 +6,7 @@ OBJS = \
 	src/map.cpp \
 	src/player.cpp \
 	src/monster.cpp \
+	src/projectile.cpp \
 
 CC = g++
 

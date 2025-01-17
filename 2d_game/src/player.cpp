@@ -119,3 +119,8 @@ void Player::handle_event(SDL_Event& e)
         }
     }
 }
+
+double Player::get_angle()
+{
+    return m_angle;
+}
