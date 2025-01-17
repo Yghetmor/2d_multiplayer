@@ -9,7 +9,7 @@ OBJS = \
 
 CC = g++
 
-COMPILER_FLAGS = -w -I /usr/local/include/
+COMPILER_FLAGS = -Wall -I /usr/local/include/
 
 LINKER_FLAGS = -lSDL2 -lSDL2_image
 

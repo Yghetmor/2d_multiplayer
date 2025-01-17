@@ -19,11 +19,11 @@ public:
     unsigned int get_height() { return m_height; }
 
 protected:
-    unsigned int m_pos_x, m_pos_y;
+    float m_pos_x, m_pos_y;
     unsigned int m_width, m_height;
     unsigned int m_entity_velocity;
     double m_angle = 0;
-    int m_vel_x, m_vel_y = 0;
+    float m_vel_x, m_vel_y = 0;
 
     SDL_Rect m_rect;
     SDL_Texture* m_texture;

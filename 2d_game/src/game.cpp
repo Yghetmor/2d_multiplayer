@@ -126,6 +126,12 @@ void Game::update()
 {
     m_player->update_position(&m_camera);
     m_camera.update(m_player->get_x(), m_player->get_y(), m_player->get_width(), m_player->get_height());
+
+    for (auto monster : m_monsters)
+    {
+        if (monster != nullptr)
+            monster->update_position(m_player);
+    }
 }
 
 void Game::draw()
@@ -140,9 +146,7 @@ void Game::draw()
     for (auto monster : m_monsters)
     {
         if (monster != nullptr)
-        {
             monster->render(m_renderer, &m_camera);
-        }
     }
 
 	SDL_RenderPresent(m_renderer);
