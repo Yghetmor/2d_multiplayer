@@ -4,9 +4,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <vector>
 #include "camera.h"
 #include "clock.h"
 #include "map.h"
+#include "monster.h"
 #include "player.h"
 #include "utils.h"
 
@@ -32,6 +34,7 @@ private:
     Camera m_camera{};
 
     Player* m_player{ nullptr };
+    std::vector<Monster*> m_monsters{};
 
 	bool isPaused{ false };
 };

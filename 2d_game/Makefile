@@ -5,6 +5,7 @@ OBJS = \
 	src/camera.cpp \
 	src/map.cpp \
 	src/player.cpp \
+	src/monster.cpp \
 
 CC = g++
 

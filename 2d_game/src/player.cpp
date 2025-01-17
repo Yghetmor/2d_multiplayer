@@ -1,8 +1,7 @@
 #include "player.h"
 
 Player::Player(SDL_Texture* texture)
-    : Entity{s_init_pos_x, s_init_pos_y, s_width, s_height, s_velocity, texture}
-{}
+    : Entity{s_init_pos_x, s_init_pos_y, s_width, s_height, s_velocity, texture} {}
 
 void Player::update_position(Camera* camera)
 {

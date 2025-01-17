@@ -36,6 +36,7 @@ bool Game::init(const char* title, int width, int height)
 	m_clock = new Clock;
     m_map = new Map(loadTexture("assets/map.png"));
     m_player = new Player(loadTexture("assets/player.png"));
+    m_monsters.push_back(new Monster(100, 100, loadTexture("assets/monster.png")));
 
 	return true;
 }
@@ -74,6 +75,15 @@ void Game::shutdown()
 
     delete m_player;
     m_player = nullptr;
+
+    for (auto monster : m_monsters)
+    {
+        if (monster != nullptr)
+        {
+            delete monster;
+            monster = nullptr;
+        }
+    }
 
 	SDL_Quit();
 }
@@ -126,6 +136,14 @@ void Game::draw()
     m_map->render(m_renderer, &m_camera);
 
     m_player->render(m_renderer, &m_camera);
+
+    for (auto monster : m_monsters)
+    {
+        if (monster != nullptr)
+        {
+            monster->render(m_renderer, &m_camera);
+        }
+    }
 
 	SDL_RenderPresent(m_renderer);
 }

@@ -12,7 +12,7 @@ public:
     ~Entity();
 
     void update_position();
-    void render(SDL_Renderer* renderer, Camera* camera);
+    void render(SDL_Renderer* renderer, Camera *camera);
     unsigned int get_x() { return m_pos_x; }
     unsigned int get_y() { return m_pos_y; }
     unsigned int get_width() { return m_width; }

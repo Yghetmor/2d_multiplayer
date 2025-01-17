@@ -55,8 +55,9 @@ void Entity::update_position()
     m_rect.y = m_pos_y;
 }
 
-void Entity::render(SDL_Renderer* renderer, Camera* camera)
+void Entity::render(SDL_Renderer* renderer, Camera *camera)
 {
-    SDL_Rect render_rect = { (int)m_pos_x - camera->get_cam()->x, (int)m_pos_y - camera->get_cam()->y, (int)m_width, (int)m_height };
+    SDL_Rect *camera_rect = camera->get_cam();
+    SDL_Rect render_rect = { (int)m_pos_x - camera_rect->x, (int)m_pos_y - camera_rect->y, (int)m_width, (int)m_height };
     SDL_RenderCopyEx(renderer, m_texture, nullptr, &render_rect, m_angle, nullptr, SDL_FLIP_NONE);
 }
