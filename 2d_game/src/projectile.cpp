@@ -42,3 +42,8 @@ bool Projectile::is_alive()
 {
     return m_alive;
 }
+
+unsigned int Projectile::get_damage()
+{
+    return m_damage;
+}

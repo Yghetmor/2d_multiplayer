@@ -167,6 +167,8 @@ void Game::update()
             }
         }
     }
+
+    projectile_collisions();
 }
 
 void Game::draw()
@@ -191,4 +193,31 @@ void Game::draw()
     }
 
 	SDL_RenderPresent(m_renderer);
+}
+
+void Game::projectile_collisions()
+{
+    for (auto& projectile : m_projectiles)
+    {
+        if (projectile != nullptr)
+        {
+            int projectile_center_x = projectile->get_x() + projectile->get_width() / 2;
+            int projectile_center_y = projectile->get_y() + projectile->get_height() / 2;
+
+            for (auto& monster : m_monsters)
+            {
+                if (projectile_center_x < monster->get_x() + monster->get_width() && projectile_center_x > monster->get_x() && projectile_center_y < monster->get_y() + monster->get_height() && projectile_center_y > monster->get_y())
+                {
+                    monster->receive_damage(projectile->get_damage());
+                    delete projectile;
+                    projectile = nullptr;
+                }
+                if (monster->get_health() <= 0)
+                {
+                    delete monster;
+                    monster = nullptr;
+                }
+            }
+        }
+    }
 }

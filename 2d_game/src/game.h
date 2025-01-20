@@ -25,6 +25,7 @@ private:
 	void handleEvent();
 	void update();
 	void draw();
+    void projectile_collisions();
 
 	bool isRunning{ true };
 

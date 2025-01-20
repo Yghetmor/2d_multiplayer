@@ -88,3 +88,13 @@ void Monster::update_position(Player *player)
     m_rect.x = m_pos_x;
     m_rect.y = m_pos_y;
 }
+
+void Monster::receive_damage(unsigned int damage)
+{
+    m_health -= damage;
+}
+
+int Monster::get_health()
+{
+    return m_health;
+}
