@@ -39,27 +39,27 @@ bool Game::init(const char* title, int width, int height)
 	m_clock = new Clock;
     m_map = new Map(loadTexture("assets/map.png"));
     m_player = new Player(loadTexture("assets/player.png"));
-    m_monsters.push_back(new Monster(100, 100, loadTexture("assets/monster.png")));
+    // m_monsters.push_back(new Monster(100, 100, loadTexture("assets/monster.png")));
 
     m_projectile_texture = loadTexture("assets/projectile.png");
+    m_monster_texture = loadTexture("assets/monster.png");
 
 	return true;
 }
 
 void Game::gameLoop()
 {
+    m_clock->start();
 	while (isRunning)
 	{
 		if (!isPaused)
 		{
-			m_clock->tick();
 			handleEvent();
 			update();
 			draw();
 		}
 		else
 		{
-			m_clock->tick();
 			handleEvent();
 		}
 	}
@@ -100,6 +100,7 @@ void Game::shutdown()
     }
 
     SDL_DestroyTexture(m_projectile_texture);
+    SDL_DestroyTexture(m_monster_texture);
 
 	SDL_Quit();
 }
@@ -169,6 +170,12 @@ void Game::update()
     }
 
     projectile_collisions();
+
+    if (m_clock->get_ticks() > 3000)
+    {
+        spawn_monster();
+        m_clock->reset();
+    }
 }
 
 void Game::draw()
@@ -206,18 +213,44 @@ void Game::projectile_collisions()
 
             for (auto& monster : m_monsters)
             {
-                if (projectile_center_x < monster->get_x() + monster->get_width() && projectile_center_x > monster->get_x() && projectile_center_y < monster->get_y() + monster->get_height() && projectile_center_y > monster->get_y())
+                if (monster != nullptr)
                 {
-                    monster->receive_damage(projectile->get_damage());
-                    delete projectile;
-                    projectile = nullptr;
-                }
-                if (monster->get_health() <= 0)
-                {
-                    delete monster;
-                    monster = nullptr;
+                    if (projectile_center_x < monster->get_x() + monster->get_width() && projectile_center_x > monster->get_x() && projectile_center_y < monster->get_y() + monster->get_height() && projectile_center_y > monster->get_y())
+                    {
+                        monster->receive_damage(projectile->get_damage());
+                        delete projectile;
+                        projectile = nullptr;
+                    }
+                    if (monster->get_health() <= 0)
+                    {
+                        delete monster;
+                        monster = nullptr;
+                    }
                 }
             }
         }
+    }
+}
+
+void Game::spawn_monster()
+{
+    int player_x = m_player->get_x();
+    int player_y = m_player->get_y();
+
+    if (player_x < MAP_WIDTH / 2 && player_y < MAP_HEIGHT / 2)
+    {
+        m_monsters.push_back(new Monster(MAP_WIDTH - 100, MAP_HEIGHT - 100, m_monster_texture));
+    }
+    else if (player_x > MAP_WIDTH / 2 && player_y < MAP_HEIGHT / 2)
+    {
+        m_monsters.push_back(new Monster(100, MAP_HEIGHT - 100, m_monster_texture));
+    }
+    else if (player_x < MAP_WIDTH / 2 && player_y > MAP_HEIGHT / 2)
+    {
+        m_monsters.push_back(new Monster(MAP_WIDTH - 100, 100, m_monster_texture));
+    }
+    else 
+    {
+        m_monsters.push_back(new Monster(100, 100, m_monster_texture));
     }
 }

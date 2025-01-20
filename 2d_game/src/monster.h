@@ -8,6 +8,7 @@ class Monster : public Entity
 {
 public:
     Monster(unsigned int init_x, unsigned int init_y, SDL_Texture* texture);
+    ~Monster();
 
     void update_position(Player *player);
     void receive_damage(unsigned int damage);

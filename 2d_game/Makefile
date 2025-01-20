@@ -7,6 +7,7 @@ OBJS = \
 	src/player.cpp \
 	src/monster.cpp \
 	src/projectile.cpp \
+	src/clock.cpp \
 
 CC = g++
 

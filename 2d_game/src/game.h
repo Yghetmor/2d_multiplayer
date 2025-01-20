@@ -26,6 +26,7 @@ private:
 	void update();
 	void draw();
     void projectile_collisions();
+    void spawn_monster();
 
 	bool isRunning{ true };
 
@@ -40,6 +41,7 @@ private:
     std::vector<Projectile*> m_projectiles{};
 
     SDL_Texture* m_projectile_texture{ nullptr };
+    SDL_Texture* m_monster_texture{ nullptr };
 
 	bool isPaused{ false };
 };
