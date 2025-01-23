@@ -12,9 +12,6 @@ type Player struct {
 	pos_y float32
 	angle float32
 	health uint8
-	width int
-	height int
-	velocity int
 }
 
 func NewPlayer(id uint8, pos_x float32, pos_y float32, angle float32) *Player {
@@ -23,10 +20,7 @@ func NewPlayer(id uint8, pos_x float32, pos_y float32, angle float32) *Player {
 	new_player.pos_x = pos_x
 	new_player.pos_y = pos_y
 	new_player.angle = angle
-	new_player.health = 10
-	new_player.width = 40
-	new_player.height = 40
-	new_player.velocity = 5
+	new_player.health = uint8(PLAYER_HEALTH)
 
 	return &new_player
 }

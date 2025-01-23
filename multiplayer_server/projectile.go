@@ -4,16 +4,16 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
+	"math"
 )
 
 type Projectile struct {
 	pos_x float32
 	pos_y float32
+	vel_x float32
+	vel_y float32
 	angle float32 // angle in degrees
-	width int
-	height int
-	velocity int
-	damage int
+	alive bool
 }
 
 func NewProjectile(pos_x float32, pos_y float32, angle float32) *Projectile {
@@ -21,10 +21,18 @@ func NewProjectile(pos_x float32, pos_y float32, angle float32) *Projectile {
 	new_projectile.pos_x = pos_x
 	new_projectile.pos_y = pos_y
 	new_projectile.angle = angle
-	new_projectile.width = 6
-	new_projectile.height = 16 
-	new_projectile.velocity = 10
-	new_projectile.damage = 1
+
+	var calc_angle float32 = 0.0
+	if angle < 180.0 {
+		calc_angle = angle + 180.0
+	} else {
+		calc_angle = angle - 180.0
+	}
+
+	new_projectile.vel_x = float32(PROJECTILE_VELOCITY) * float32(math.Sin(float64(calc_angle) * math.Pi / 180.0))
+	new_projectile.vel_y = (-1) * float32(PROJECTILE_VELOCITY) * float32(math.Cos(float64(calc_angle) * math.Pi / 180.0))
+
+	new_projectile.alive = true
 
 	return &new_projectile
 }
@@ -51,3 +59,11 @@ func (projectile *Projectile)Format() (*bytes.Buffer, error) {
 	return buf, nil
 }
 
+func (projectile *Projectile)UpdatePosition() {
+	projectile.pos_x += projectile.vel_x
+	projectile.pos_y += projectile.vel_y
+
+	if projectile.pos_x < 50 || projectile.pos_x > float32(MAP_WIDTH) - 50 - float32(PROJECTILE_WIDTH) || projectile.pos_y < 50 || projectile.pos_y > float32(MAP_HEIGHT) - 50 - float32(PROJECTILE_HEIGHT) {
+		projectile.alive = false
+	}
+}

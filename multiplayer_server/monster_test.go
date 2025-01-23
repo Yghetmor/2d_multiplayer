@@ -15,7 +15,7 @@ func TestFormat(t *testing.T) {
 		t.Fatal("Format() function failed!")
 	}
 
-	expected_buffer := [6]byte {byte('-'), 0x40, 0x00, 0x40, 0x00, 0x03}
+	expected_buffer := [10]byte {byte('-'), 0x40, 0x00, 0x40, 0x00, 0x03, 0x00, 0x00, 0x00, 0x00}
 	if !bytes.Equal(test_buffer.Bytes(), expected_buffer[:]) {
 		t.Fatal("Format() function returns wrong answer!")
 	}
