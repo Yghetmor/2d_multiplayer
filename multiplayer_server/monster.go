@@ -19,7 +19,7 @@ func NewMonster(pos_x float32, pos_y float32) *Monster {
 	new_monster.pos_x = pos_x
 	new_monster.pos_y = pos_y
 	new_monster.angle = 0.0
-	new_monster.health = uint8(MONSTER_DAMAGE)
+	new_monster.health = uint8(MONSTER_HEALTH)
 	
 	return &new_monster
 }

@@ -54,3 +54,23 @@ func (player *Player)Format() (*bytes.Buffer, error) {
 
 	return buf, nil
 }
+
+func (player *Player)UpdatePosition(buf_in []byte) error {
+	reader := bytes.NewReader(buf_in)
+
+	var data struct {
+		Pos_x uint16
+		Pos_y uint16
+		Angle float32
+	}
+
+	if err := binary.Read(reader, binary.LittleEndian, &data); err != nil {
+		return errors.New("binary.Read failed")
+	}
+
+	player.pos_x = float32(data.Pos_x)
+	player.pos_y = float32(data.Pos_y)
+	player.angle = data.Angle
+
+	return nil
+}
