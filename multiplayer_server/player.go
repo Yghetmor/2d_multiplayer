@@ -4,22 +4,25 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
+	"net"
 )
 
 type Player struct {
 	id uint8
+	connection net.Conn
 	pos_x float32
 	pos_y float32
 	angle float32
 	health uint8
 }
 
-func NewPlayer(id uint8, pos_x float32, pos_y float32, angle float32) *Player {
+func NewPlayer(id uint8, connection net.Conn) *Player {
 	new_player := Player{}
 	new_player.id = id
-	new_player.pos_x = pos_x
-	new_player.pos_y = pos_y
-	new_player.angle = angle
+	new_player.connection = connection
+	new_player.pos_x = float32(MAP_WIDTH / 2)
+	new_player.pos_y = float32(MAP_HEIGHT / 2)
+	new_player.angle = 0
 	new_player.health = uint8(PLAYER_HEALTH)
 
 	return &new_player
