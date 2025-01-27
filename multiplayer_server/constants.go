@@ -3,6 +3,8 @@ package main
 const MAP_WIDTH int = 1280
 const MAP_HEIGHT int = 1280
 
+const FPS int = 60
+
 const PLAYER_HEALTH int = 10
 const PLAYER_WIDTH int = 40
 const PLAYER_HEIGHT int = 40
