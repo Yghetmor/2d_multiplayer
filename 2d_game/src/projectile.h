@@ -12,6 +12,7 @@ public:
 
     void update_position();
     bool is_alive();
+    void kill();
     unsigned int get_damage();
 
 private:

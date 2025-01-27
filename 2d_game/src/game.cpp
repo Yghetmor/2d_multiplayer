@@ -1,5 +1,4 @@
 #include "game.h"
-#include "entity.h"
 #include "utils.h"
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_mouse.h>
@@ -218,8 +217,7 @@ void Game::projectile_collisions()
                     if (projectile_center_x < monster->get_x() + monster->get_width() && projectile_center_x > monster->get_x() && projectile_center_y < monster->get_y() + monster->get_height() && projectile_center_y > monster->get_y())
                     {
                         monster->receive_damage(projectile->get_damage());
-                        delete projectile;
-                        projectile = nullptr;
+                        projectile->kill();
                     }
                     if (monster->get_health() <= 0)
                     {
