@@ -17,11 +17,13 @@ class Game
 {
 public:
 	bool init(const char* title, int width, int height);
+    bool online_init();
 	void gameLoop();
+    void OnlineGameLoop();
 	void shutdown();
 	SDL_Texture* loadTexture(const char* path);
 
-private:
+protected:
 	void handleEvent();
 	void update();
 	void draw();

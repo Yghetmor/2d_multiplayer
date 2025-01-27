@@ -38,7 +38,6 @@ bool Game::init(const char* title, int width, int height)
 	m_clock = new Clock;
     m_map = new Map(loadTexture("assets/map.png"));
     m_player = new Player(loadTexture("assets/player.png"));
-    // m_monsters.push_back(new Monster(100, 100, loadTexture("assets/monster.png")));
 
     m_projectile_texture = loadTexture("assets/projectile.png");
     m_monster_texture = loadTexture("assets/monster.png");

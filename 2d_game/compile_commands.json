@@ -3,7 +3,8 @@
     "arguments": [
       "/usr/bin/g++",
       "-c",
-      "-w",
+      "-std=c++20",
+      "-Wall",
       "-I",
       "/usr/local/include/",
       "-o",
@@ -12,6 +13,150 @@
     ],
     "directory": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game",
     "file": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/src/main.cpp",
+    "output": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/bin/2d_game"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-I",
+      "/usr/local/include/",
+      "-o",
+      "bin/2d_game",
+      "src/game.cpp"
+    ],
+    "directory": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game",
+    "file": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/src/game.cpp",
+    "output": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/bin/2d_game"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-I",
+      "/usr/local/include/",
+      "-o",
+      "bin/2d_game",
+      "src/entity.cpp"
+    ],
+    "directory": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game",
+    "file": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/src/entity.cpp",
+    "output": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/bin/2d_game"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-I",
+      "/usr/local/include/",
+      "-o",
+      "bin/2d_game",
+      "src/camera.cpp"
+    ],
+    "directory": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game",
+    "file": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/src/camera.cpp",
+    "output": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/bin/2d_game"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-I",
+      "/usr/local/include/",
+      "-o",
+      "bin/2d_game",
+      "src/map.cpp"
+    ],
+    "directory": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game",
+    "file": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/src/map.cpp",
+    "output": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/bin/2d_game"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-I",
+      "/usr/local/include/",
+      "-o",
+      "bin/2d_game",
+      "src/player.cpp"
+    ],
+    "directory": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game",
+    "file": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/src/player.cpp",
+    "output": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/bin/2d_game"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-I",
+      "/usr/local/include/",
+      "-o",
+      "bin/2d_game",
+      "src/monster.cpp"
+    ],
+    "directory": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game",
+    "file": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/src/monster.cpp",
+    "output": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/bin/2d_game"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-I",
+      "/usr/local/include/",
+      "-o",
+      "bin/2d_game",
+      "src/projectile.cpp"
+    ],
+    "directory": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game",
+    "file": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/src/projectile.cpp",
+    "output": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/bin/2d_game"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-I",
+      "/usr/local/include/",
+      "-o",
+      "bin/2d_game",
+      "src/clock.cpp"
+    ],
+    "directory": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game",
+    "file": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/src/clock.cpp",
+    "output": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/bin/2d_game"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-c",
+      "-std=c++20",
+      "-Wall",
+      "-I",
+      "/usr/local/include/",
+      "-o",
+      "bin/2d_game",
+      "src/online_game.cpp"
+    ],
+    "directory": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game",
+    "file": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/src/online_game.cpp",
     "output": "/home/filip/Documents/CPP/2D_MULTIPLAYER/2d_game/bin/2d_game"
   }
 ]

@@ -1,4 +1,5 @@
 #include "player.h"
+#include <cstdint>
 
 Player::Player(SDL_Texture* texture)
     : Entity{s_init_pos_x, s_init_pos_y, s_width, s_height, s_velocity, texture} {}
@@ -123,4 +124,41 @@ void Player::handle_event(SDL_Event& e)
 double Player::get_angle()
 {
     return m_angle;
+}
+
+std::vector<char> Player::format_position()
+{
+    std::vector<char> output;
+    uint16_t pos_x = static_cast<uint16_t>(m_pos_x);
+    uint16_t pos_y = static_cast<uint16_t>(m_pos_y);
+    float angle = static_cast<float>(angle);
+
+    if (std::endian::native == std::endian::little)
+    {
+        char *byte = (char*)&pos_x;
+        for (size_t i{}; i < sizeof(pos_x); i++)
+        {
+            output.push_back(*byte);
+            byte++;
+        }
+
+        byte = (char*)&pos_y;
+        for (size_t i{}; i < sizeof(pos_y); i++)
+        {
+            output.push_back(*byte);
+            byte++;
+        }
+
+        byte = (char*)&angle;
+        for (size_t i{}; i < sizeof(angle); i++)
+        {
+            output.push_back(*byte);
+            byte++;
+        }
+    }
+    else 
+    {
+
+    }
+    return output;
 }

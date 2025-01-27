@@ -8,10 +8,11 @@ OBJS = \
 	src/monster.cpp \
 	src/projectile.cpp \
 	src/clock.cpp \
+	src/online_game.cpp \
 
 CC = g++
 
-COMPILER_FLAGS = -Wall -I /usr/local/include/
+COMPILER_FLAGS = -std=c++20 -Wall -I /usr/local/include/
 
 LINKER_FLAGS = -lSDL2 -lSDL2_image
 

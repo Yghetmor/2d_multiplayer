@@ -3,6 +3,8 @@
 
 #include "entity.h"
 #include "utils.h"
+#include <vector>
+#include <bit>
 
 class Player : public Entity
 {
@@ -12,6 +14,7 @@ public:
     void update_position(Camera* camera);
     void handle_event(SDL_Event& e);
     double get_angle();
+    std::vector<char> format_position();
 
 private:
     static const unsigned int s_init_pos_x = MAP_WIDTH / 2;

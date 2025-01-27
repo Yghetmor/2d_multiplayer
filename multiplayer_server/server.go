@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	var instances_map map[int] chan net.Conn
+	instances_map := make(map[int] chan net.Conn)
 
 	listener, err := net.Listen("tcp", "localhost:6969")
 	if err != nil {
@@ -25,38 +25,41 @@ func main() {
 			continue
 		}
 
+		log.Println("Got a connection !")
 		go handleClient(conn, &instances_map)
 	}
 }
 
 func handleClient(conn net.Conn, instances_map *map[int] chan net.Conn) {
-	var buf []byte
-	n, err := conn.Read(buf)
-	if err != nil {
-		log.Println("Error reading from connection : ", err)
-		conn.Close()
-		return
-	}
-	if n != 4 {
-		log.Println("Error reading from connection : expected game session id (int) got packet of len : ", n, " instead")
-		conn.Close()
-		return
+	buf := make([]byte, 256)
+	for {
+		n, err := conn.Read(buf)
+		if err != nil {
+			log.Println("Error reading from connection : ", err)
+			conn.Close()
+			return
+		}
+		
+		if n == 4 {
+			break
+		}
 	}
 
 	buf_reader := bytes.NewReader(buf)
-	var session_number int
-	err = binary.Read(buf_reader, binary.LittleEndian, &session_number)
+	var session_number int32
+	err := binary.Read(buf_reader, binary.LittleEndian, &session_number)
 	if err != nil {
 		log.Println("Error reading session id : ", err)
 		conn.Close()
 		return
 	}
 
-	channel, ok := (*instances_map)[session_number]
+	channel, ok := (*instances_map)[int(session_number)]
 	if ok {
 		channel <- conn
 	} else {
-		(*instances_map)[session_number] = make(chan net.Conn)
-		go StartInstance((*instances_map)[session_number], conn)
+		(*instances_map)[int(session_number)] = make(chan net.Conn)
+		log.Println("Creating instance no : ", session_number)
+		go StartInstance((*instances_map)[int(session_number)], conn)
 	}
 }

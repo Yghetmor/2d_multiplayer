@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/binary"
+	"io"
 	"log"
 	"net"
 	"slices"
@@ -21,7 +22,11 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 		if elapsed_time > 1000 / int64(FPS) {
 			player_new_pos_buf := make([]byte, 1024)
 			n, err := player.connection.Read(player_new_pos_buf)
-			if err != nil {
+			if err == io.EOF {
+				log.Println("Client closed the connection")
+				player_conn.Close()
+				return
+			} else if err != nil {
 				log.Println("Couldn't receive from player connection : ", err)
 			}
 			if n > 8 {
