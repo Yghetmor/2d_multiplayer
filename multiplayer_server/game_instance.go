@@ -16,10 +16,14 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 	projectiles := []*Projectile{}
 
 	start_time := time.Now()
+	monster_start_time := time.Now()
 
 	for {
 		elapsed_time := time.Since(start_time).Milliseconds()
+		monster_spawn_time := time.Since(monster_start_time).Seconds() 
+
 		if elapsed_time > 1000 / int64(FPS) {
+
 			player_new_pos_buf := make([]byte, 1024)
 			n, err := player.connection.Read(player_new_pos_buf)
 			if err == io.EOF {
@@ -62,8 +66,26 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 			if err != nil {
 				log.Println("Error while sending data to client : ", err)
 			}
+			log.Println("Sent ", len(output_infos) + 2, " bytes")
 
 			start_time = time.Now()
+		}
+
+		if monster_spawn_time > 3 {
+			player_x := player.pos_x
+			player_y := player.pos_y
+
+			if player_x < float32(MAP_WIDTH) / 2 && player_y < float32(MAP_HEIGHT) / 2 {
+				monsters = append(monsters, NewMonster(float32(MAP_WIDTH) - 100, float32(MAP_HEIGHT) - 100))
+			} else if player_x > float32(MAP_WIDTH) / 2 && player_y < float32(MAP_HEIGHT) / 2 {
+				monsters = append(monsters, NewMonster(100, float32(MAP_HEIGHT) - 100))
+			} else if player_x < float32(MAP_WIDTH) / 2 && player_y > float32(MAP_HEIGHT) / 2 {
+				monsters = append(monsters, NewMonster(float32(MAP_WIDTH) - 100, 100))
+			} else {
+				monsters = append(monsters, NewMonster(100, 100))
+			}
+
+			monster_start_time = time.Now()
 		}
 	}
 }

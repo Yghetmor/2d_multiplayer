@@ -131,7 +131,7 @@ std::vector<char> Player::format_position()
     std::vector<char> output;
     uint16_t pos_x = static_cast<uint16_t>(m_pos_x);
     uint16_t pos_y = static_cast<uint16_t>(m_pos_y);
-    float angle = static_cast<float>(angle);
+    uint8_t angle = static_cast<uint8_t>(angle);
 
     if (std::endian::native == std::endian::little)
     {

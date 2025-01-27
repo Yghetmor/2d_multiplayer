@@ -5,6 +5,13 @@
 Monster::Monster(unsigned int init_x, unsigned int init_y, SDL_Texture* texture)
     : Entity{init_x, init_y, s_width, s_height, s_velocity, texture} {}
 
+Monster::Monster(unsigned int pos_x, unsigned int pos_y, SDL_Texture *texture, double angle, int health)
+    : Entity{pos_x, pos_y, s_width, s_height, s_velocity, texture} 
+{
+    m_angle = angle;
+    m_health = health;
+}
+
 Monster::~Monster()
 {
     m_texture = nullptr;

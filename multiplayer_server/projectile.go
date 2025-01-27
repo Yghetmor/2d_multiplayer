@@ -51,7 +51,7 @@ func (projectile *Projectile)Format() (*bytes.Buffer, error) {
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}
-	err = binary.Write(buf, binary.LittleEndian, projectile.angle)
+	err = binary.Write(buf, binary.LittleEndian, uint8(projectile.angle))
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}

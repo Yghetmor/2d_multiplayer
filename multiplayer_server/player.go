@@ -50,7 +50,7 @@ func (player *Player)Format() (*bytes.Buffer, error) {
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}
-	err = binary.Write(buf, binary.LittleEndian, player.angle)
+	err = binary.Write(buf, binary.LittleEndian, uint8(player.angle))
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}
@@ -64,7 +64,7 @@ func (player *Player)UpdatePosition(buf_in []byte) error {
 	var data struct {
 		Pos_x uint16
 		Pos_y uint16
-		Angle float32
+		Angle uint8
 	}
 
 	if err := binary.Read(reader, binary.LittleEndian, &data); err != nil {
@@ -73,7 +73,7 @@ func (player *Player)UpdatePosition(buf_in []byte) error {
 
 	player.pos_x = float32(data.Pos_x)
 	player.pos_y = float32(data.Pos_y)
-	player.angle = data.Angle
+	player.angle = float32(data.Angle)
 
 	return nil
 }

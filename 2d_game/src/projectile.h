@@ -8,6 +8,7 @@ class Projectile : public Entity
 {
 public:
     Projectile(Player *shooter, SDL_Texture *texture);
+    Projectile(unsigned int pos_x, unsigned int pos_y, float angle, SDL_Texture *texture);
     ~Projectile();
 
     void update_position();

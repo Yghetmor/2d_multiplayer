@@ -1,4 +1,5 @@
 #include "projectile.h"
+#include "entity.h"
 
 Projectile::Projectile(Player *shooter, SDL_Texture *texture)
     : Entity{shooter->get_x() + shooter->get_width() / 2, shooter->get_y() + shooter->get_height() / 2, s_width, s_height, s_velocity, texture}, m_alive{true} 
@@ -17,6 +18,12 @@ Projectile::Projectile(Player *shooter, SDL_Texture *texture)
 
     m_vel_x = m_entity_velocity * sin(calc_angle * PI / 180.0);
     m_vel_y = (-1.0) * m_entity_velocity * cos(calc_angle * PI / 180.0);
+}
+
+Projectile::Projectile(unsigned int pos_x, unsigned int pos_y, float angle, SDL_Texture *texture)
+    : Entity(pos_x, pos_y, s_width, s_height, s_velocity, texture)
+{
+    m_angle = angle;
 }
 
 Projectile::~Projectile() 
