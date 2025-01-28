@@ -8,7 +8,6 @@ import (
 func TestFormat(t *testing.T) {
 	var monster_x float32 = 0x0040
 	var monster_y float32 = 0x0040
-	// var monster_health uint8 = 0x03
 	test_monster := NewMonster(monster_x, monster_y)
 	test_buffer, err := test_monster.Format()
 	if err != nil {

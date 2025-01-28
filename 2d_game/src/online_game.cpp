@@ -50,6 +50,12 @@ void OnlineGame::gameLoop()
         send_player_pos(client_socket);
         unpack_positions(client_socket);
         draw();
+
+        for (auto& monster : m_monsters)
+        {
+             // std::cout << "Monster health : " << monster->get_health() << std::endl;
+            std::cout << "Monster coords - x : " << monster->get_x() << " - y : " << monster->get_y() << std::endl;
+        }
     }
 
     close(client_socket);
@@ -72,7 +78,6 @@ void OnlineGame::handleEvent()
 
 void OnlineGame::unpack_positions(int socket)
 {
-    std::cout << "Receiving data from server" << std::endl;
     char buf[1024];
     int rec_count = recv(socket, &buf, sizeof(buf), 0);
     while (rec_count < 2)
@@ -85,11 +90,8 @@ void OnlineGame::unpack_positions(int socket)
         rec_count += recv(socket, &buf + rec_count, sizeof(buf) - rec_count, 0);
     }
 
-    std::cout << "Received " << rec_count << " bytes from server" << std::endl;
-
     char *moving_buf_pointer = &buf[2];
     bool is_done = false;
-    int entities_unpacked = 0;
     while (!is_done)
     {
         switch (*moving_buf_pointer)
@@ -99,32 +101,28 @@ void OnlineGame::unpack_positions(int socket)
         case '-':
             moving_buf_pointer += 1;
             unpack_monster(&moving_buf_pointer);
-            entities_unpacked++;
             break;
         case '*':
             moving_buf_pointer += 1;
             unpack_projectile(&moving_buf_pointer);
-            entities_unpacked++;
             break;
         default:
             is_done = true;
         }
     }
 
-    std::cout << "Unpacked " << entities_unpacked << " entities" << std::endl;
 }
 
 void OnlineGame::unpack_monster(char **buf)
 {
-    std::cout << "Unpacking monster data..." << std::endl;
     uint16_t pos_x;
     uint16_t pos_y;
     uint8_t health;
     uint8_t angle;
 
-    pos_x = (uint16_t)(**buf) + ((uint16_t)(*((*buf) + 1)) << 8);
+    pos_x = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>(*((*buf) + 1)) << 8);
     *buf += 2;
-    pos_y = (uint16_t)(**buf) + ((uint16_t)(*((*buf) + 1)) << 8);
+    pos_y = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>(*((*buf) + 1)) << 8);
     *buf += 2;
     health = (uint8_t)(**buf);
     *buf += 1;
@@ -153,7 +151,6 @@ void OnlineGame::unpack_projectile(char **buf)
 void OnlineGame::send_player_pos(int socket)
 {
     std::vector<char> player_info = m_player->format_position();
-    std::cout << "Sending player position..." << std::endl;
     if (send(socket, &player_info[0], player_info.size(), 0) != player_info.size())
     {
         std::cout << "Error sending player info to server" << std::endl;

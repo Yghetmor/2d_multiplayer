@@ -55,8 +55,8 @@ func (monster *Monster)UpdatePosition(player *Player) {
 	player_y := player.pos_y
 	var calc_angle float64 = 0.0
 
-	if monster.pos_x == player_y {
-		if monster.pos_y > player_x {
+	if monster.pos_y == player_y {
+		if monster.pos_x > player_x {
 			calc_angle = 270.0
 		} else {
 			calc_angle = 90.0
