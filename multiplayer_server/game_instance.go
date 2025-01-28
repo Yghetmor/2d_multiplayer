@@ -15,6 +15,33 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 	monsters := []*Monster{}
 	projectiles := []*Projectile{}
 
+	// var udp_port uint16 = 60000
+	// udp_port_bytes := new(bytes.Buffer)
+	// err := binary.Write(udp_port_bytes, binary.LittleEndian, udp_port)
+	// if err != nil {
+	// 	log.Println("Error in binary write of udp port : ", err)
+	// 	return
+	// }
+	//
+	// _, err = player.connection.Write(udp_port_bytes.Bytes())
+	// if err != nil {
+	// 	log.Println("Error in sending udp port : ", err)
+	// 	return
+	// }
+
+	udpClientAddr, err := net.ResolveUDPAddr("udp", "localhost:40000")
+	if err != nil {
+		log.Println("Couldn't resolve UDP address : ", err)
+		return
+	}
+
+	udpConn, err := net.ListenUDP("udp", udpClientAddr)
+	if err != nil {
+		log.Println("Couldn't listen to UDP : ", err)
+		return
+	}
+	defer udpConn.Close() 
+
 	start_time := time.Now()
 	// monster_start_time := time.Now()
 
@@ -27,7 +54,7 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 		if elapsed_time > 1000 / int64(FPS) {
 
 			player_new_pos_buf := make([]byte, 1024)
-			n, err := player.connection.Read(player_new_pos_buf)
+			n, retAddr, err := udpConn.ReadFromUDP(player_new_pos_buf)
 			if err == io.EOF {
 				log.Println("Client closed the connection")
 				player_conn.Close()
@@ -70,7 +97,7 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 			err = binary.Write(output_with_len, binary.LittleEndian, uint16(len(output_infos)))
 			output_with_len.Write(output_infos)
 
-			_, err = player.connection.Write(output_with_len.Bytes())
+			_, err = udpConn.WriteToUDP(output_with_len.Bytes(), retAddr)
 			if err != nil {
 				log.Println("Error while sending data to client : ", err)
 			}

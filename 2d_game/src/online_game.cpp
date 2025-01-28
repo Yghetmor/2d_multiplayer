@@ -12,6 +12,7 @@ OnlineGame::OnlineGame(unsigned int instance_id)
 
 void OnlineGame::gameLoop()
 {
+    // Creating TCP socket to connect to game instance on server
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
 
     sockaddr_in server_address;
@@ -38,6 +39,26 @@ void OnlineGame::gameLoop()
 
     std::cout << "Connected to game instance" << std::endl;
 
+    uint16_t udp_port = 40000;
+
+    // Creating UDP socket to receive entity info on
+    int udp_socket = socket(AF_INET, SOCK_DGRAM, 0);
+    sockaddr_in udp_address;
+    udp_address.sin_family = AF_INET;
+    udp_address.sin_port = htons(udp_port);
+    if (inet_pton(AF_INET, "127.0.0.1", &udp_address.sin_addr) <= 0)
+    {
+        std::cout << "Invalid server address / Address not supported" << std::endl;
+        return;
+    }
+
+    if (connect(udp_socket, (struct sockaddr*)&udp_address, sizeof(udp_address)) != 0)
+    {
+        std::cout << "Couldn't connect to server with UDP" << std::endl;
+        return;
+    }
+
+
     while (isRunning)
     {
         m_monsters.clear();
@@ -47,8 +68,8 @@ void OnlineGame::gameLoop()
         m_player->update_position(&m_camera);
         m_camera.update(m_player->get_x(), m_player->get_y(), m_player->get_width(), m_player->get_height());
 
-        send_player_pos(client_socket);
-        unpack_positions(client_socket);
+        send_player_pos(udp_socket);
+        unpack_positions(udp_socket);
         draw();
 
         for (auto& monster : m_monsters)
