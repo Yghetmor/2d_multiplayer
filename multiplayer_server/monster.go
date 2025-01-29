@@ -65,22 +65,29 @@ func (monster *Monster)UpdatePosition(player *Player) {
 			calc_angle = 90.0
 		}
 	} else {
-		if monster.pos_x < player_x {
-			if monster.pos_y < player_y {
-				arctan := math.Atan((float64(player_x) - float64(monster.pos_x)) / (float64(player_y) - float64(monster.pos_y)))
-				calc_angle = 180.0 - (arctan * 180.0 / math.Pi)
-			} else {
-				arctan := math.Atan((float64(player_x) - float64(monster.pos_x)) / (float64(monster.pos_y) - float64(player_y)))
-				calc_angle = arctan * 180.0 / math.Pi
-			}
-		} else {
-			if monster.pos_y < player_y {
-				arctan := math.Atan((float64(monster.pos_x) - float64(player_x)) / (float64(player_y) - float64(monster.pos_y)))
-				calc_angle = 180.0 + (arctan * 180.0 / math.Pi)
-			} else {
-				arctan := math.Atan((float64(monster.pos_x) - float64(player_x)) / (float64(monster.pos_y) - float64(player_y)))
-				calc_angle = 360 - (arctan * 180.0 / math.Pi)
-			}
+		// if monster.pos_x < player_x {
+		// 	if monster.pos_y < player_y {
+		// 		arctan := math.Atan((float64(player_x) - float64(monster.pos_x)) / (float64(player_y) - float64(monster.pos_y)))
+		// 		calc_angle = 180.0 - (arctan * 180.0 / math.Pi)
+		// 	} else {
+		// 		arctan := math.Atan((float64(player_x) - float64(monster.pos_x)) / (float64(monster.pos_y) - float64(player_y)))
+		// 		calc_angle = arctan * 180.0 / math.Pi
+		// 	}
+		// } else {
+		// 	if monster.pos_y < player_y {
+		// 		arctan := math.Atan((float64(monster.pos_x) - float64(player_x)) / (float64(player_y) - float64(monster.pos_y)))
+		// 		calc_angle = 180.0 + (arctan * 180.0 / math.Pi)
+		// 	} else {
+		// 		arctan := math.Atan((float64(monster.pos_x) - float64(player_x)) / (float64(monster.pos_y) - float64(player_y)))
+		// 		calc_angle = 360 - (arctan * 180.0 / math.Pi)
+		// 	}
+		// }
+
+		arctan := math.Atan((float64(player_x) - float64(monster.pos_x)) / (float64(monster.pos_y) - float64(player_y)))
+		calc_angle = arctan * 180.0 / math.Pi
+
+		if monster.pos_y < player_y {
+			calc_angle += 180.0
 		}
 	}
 

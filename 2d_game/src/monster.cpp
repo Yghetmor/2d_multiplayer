@@ -35,31 +35,12 @@ void Monster::update_position(Player *player)
     }
     else 
     {
-        if (m_pos_x < player_x)
+        double arctan = atan((double)(player_x - m_pos_x) / (double)(m_pos_y - player_y));
+        calc_angle = arctan * 180.0 / PI;
+
+        if (m_pos_y < player_y)
         {
-            if (m_pos_y < player_y)
-            {
-                double arctan = atan((double)(player_x - m_pos_x) / (double)(player_y - m_pos_y));
-                calc_angle = 180.0 - (arctan * 180.0 / PI);
-            }
-            else 
-            {
-                double arctan = atan((double)(player_x - m_pos_x) / (double)(m_pos_y - player_y));
-                calc_angle = arctan * 180.0 / PI;
-            }
-        }
-        else 
-        {
-            if (m_pos_y < player_y)
-            {
-                double arctan = atan((double)(m_pos_x - player_x) / (double)(player_y - m_pos_y));
-                calc_angle = 180.0 + (arctan * 180.0 / PI);
-            }
-            else 
-            {
-                double arctan = atan((double)(m_pos_x - player_x) / (double)(m_pos_y - player_y));
-                calc_angle = 360.0 - (arctan * 180.0 / PI);
-            }
+            calc_angle += 180.0;
         }
     }
 

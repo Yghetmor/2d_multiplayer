@@ -48,6 +48,7 @@ bool Game::init(const char* title, int width, int height)
 void Game::gameLoop()
 {
     m_clock->start();
+    spawn_monster();
 	while (isRunning)
 	{
 		if (!isPaused)
@@ -169,11 +170,11 @@ void Game::update()
 
     projectile_collisions();
 
-    if (m_clock->get_ticks() > 3000)
-    {
-        spawn_monster();
-        m_clock->reset();
-    }
+    // if (m_clock->get_ticks() > 3000)
+    // {
+    //     spawn_monster();
+    //     m_clock->reset();
+    // }
 }
 
 void Game::draw()
