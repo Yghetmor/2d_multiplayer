@@ -79,8 +79,6 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 					continue
 				}
 
-				log.Println("Monster coords - x : ", monster.pos_x, " - y : ", monster.pos_y)
-
 				output_infos = slices.Concat(output_infos, formatted.Bytes())
 			}
 			for _, projectile := range projectiles {

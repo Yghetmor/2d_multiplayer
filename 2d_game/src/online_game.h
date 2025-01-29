@@ -4,6 +4,7 @@
 #include "game.h"
 #include "monster.h"
 #include "projectile.h"
+#include <cstdint>
 
 class OnlineGame : public Game {
 public:
@@ -11,8 +12,8 @@ public:
     void gameLoop();
     void handleEvent();
     void unpack_positions(int socket);
-    void unpack_monster(char** buf);
-    void unpack_projectile(char** buf);
+    void unpack_monster(uint8_t** buf);
+    void unpack_projectile(uint8_t** buf);
     void send_player_pos(int socket);
 
 private:

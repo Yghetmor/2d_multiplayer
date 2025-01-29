@@ -71,12 +71,6 @@ void OnlineGame::gameLoop()
         send_player_pos(udp_socket);
         unpack_positions(udp_socket);
         draw();
-
-        for (auto& monster : m_monsters)
-        {
-             // std::cout << "Monster health : " << monster->get_health() << std::endl;
-            std::cout << "Monster coords - x : " << monster->get_x() << " - y : " << monster->get_y() << std::endl;
-        }
     }
 
     close(client_socket);
@@ -99,19 +93,20 @@ void OnlineGame::handleEvent()
 
 void OnlineGame::unpack_positions(int socket)
 {
-    char buf[1024];
+    uint8_t buf[1024];
     int rec_count = recv(socket, &buf, sizeof(buf), 0);
-    while (rec_count < 2)
+    while (rec_count < 6)
     {
         rec_count += recv(socket, &buf + rec_count, sizeof(buf) - rec_count, 0);
     }
-    uint16_t rec_len = (uint8_t)buf[0] + ((uint8_t)buf[1] << 8);
+
+    uint16_t rec_len = static_cast<uint16_t>(buf[0]) + (static_cast<uint16_t>(buf[1]) << 8);
     while (rec_count < rec_len + 2)
     {
         rec_count += recv(socket, &buf + rec_count, sizeof(buf) - rec_count, 0);
     }
 
-    char *moving_buf_pointer = &buf[2];
+    uint8_t *moving_buf_pointer = &buf[2];
     bool is_done = false;
     while (!is_done)
     {
@@ -134,16 +129,16 @@ void OnlineGame::unpack_positions(int socket)
 
 }
 
-void OnlineGame::unpack_monster(char **buf)
+void OnlineGame::unpack_monster(uint8_t **buf)
 {
     uint16_t pos_x;
     uint16_t pos_y;
     uint8_t health;
     uint8_t angle;
 
-    pos_x = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>(*((*buf) + 1)) << 8);
+    pos_x = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>((*((*buf) + 1))) << 8);
     *buf += 2;
-    pos_y = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>(*((*buf) + 1)) << 8);
+    pos_y = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>((*((*buf) + 1))) << 8);
     *buf += 2;
     health = (uint8_t)(**buf);
     *buf += 1;
@@ -153,15 +148,15 @@ void OnlineGame::unpack_monster(char **buf)
     m_monsters.push_back(new Monster(pos_x, pos_y, m_monster_texture, angle, health));
 }
 
-void OnlineGame::unpack_projectile(char **buf)
+void OnlineGame::unpack_projectile(uint8_t **buf)
 {
     uint16_t pos_x;
     uint16_t pos_y;
     uint8_t angle;
 
-    pos_x = (uint16_t)(**buf) + ((uint16_t)(*((*buf) + 1)) << 8);
+    pos_x = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>(*((*buf) + 1)) << 8);
     *buf += 2;
-    pos_y = (uint16_t)(**buf) + ((uint16_t)(*((*buf) + 1)) << 8);
+    pos_y = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>(*((*buf) + 1)) << 8);
     *buf += 2;
     angle = (uint8_t)(**buf);
     *buf += 1;

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
+	// "log"
 	"math"
 )
 
@@ -46,6 +47,8 @@ func (monster *Monster)Format() (*bytes.Buffer, error) {
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}
+
+	// log.Println("Send monster coords - x : ", uint16(monster.pos_x), " - y : ", uint16(monster.pos_y))
 
 	return buf, nil
 }
