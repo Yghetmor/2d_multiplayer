@@ -4,28 +4,25 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
-	// "log"
 	"math"
 )
 
 type Monster struct {
-	pos_x float32
-	pos_y float32
-	angle float32
-	health uint8
+	pos_x    float32
+	pos_y    float32
+	angleDeg float32
+	health   uint8
 }
 
 func NewMonster(pos_x float32, pos_y float32) *Monster {
-	new_monster := Monster{}
-	new_monster.pos_x = pos_x
-	new_monster.pos_y = pos_y
-	new_monster.angle = 0.0
-	new_monster.health = uint8(MONSTER_HEALTH)
-	
-	return &new_monster
+	return &Monster{
+		pos_x:  pos_x,
+		pos_y:  pos_y,
+		health: uint8(MONSTER_HEALTH),
+	}
 }
 
-func (monster *Monster)Format() (*bytes.Buffer, error) {
+func (monster Monster) bufferFormat() (*bytes.Buffer, error) {
 	buf := new(bytes.Buffer)
 	err := buf.WriteByte(byte('-'))
 	if err != nil {
@@ -43,20 +40,18 @@ func (monster *Monster)Format() (*bytes.Buffer, error) {
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}
-	err = binary.Write(buf, binary.LittleEndian, uint8(monster.angle))
+	err = binary.Write(buf, binary.LittleEndian, uint8(monster.angleDeg))
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}
 
-	// log.Println("Send monster coords - x : ", uint16(monster.pos_x), " - y : ", uint16(monster.pos_y))
-
 	return buf, nil
 }
 
-func (monster *Monster)UpdatePosition(player *Player) {
+func (monster *Monster) UpdatePosition(player Player) {
 	player_x := player.pos_x
 	player_y := player.pos_y
-	var calc_angle float64 = 0.0
+	var calc_angle float64
 
 	if monster.pos_y == player_y {
 		if monster.pos_x > player_x {
@@ -65,24 +60,6 @@ func (monster *Monster)UpdatePosition(player *Player) {
 			calc_angle = 90.0
 		}
 	} else {
-		// if monster.pos_x < player_x {
-		// 	if monster.pos_y < player_y {
-		// 		arctan := math.Atan((float64(player_x) - float64(monster.pos_x)) / (float64(player_y) - float64(monster.pos_y)))
-		// 		calc_angle = 180.0 - (arctan * 180.0 / math.Pi)
-		// 	} else {
-		// 		arctan := math.Atan((float64(player_x) - float64(monster.pos_x)) / (float64(monster.pos_y) - float64(player_y)))
-		// 		calc_angle = arctan * 180.0 / math.Pi
-		// 	}
-		// } else {
-		// 	if monster.pos_y < player_y {
-		// 		arctan := math.Atan((float64(monster.pos_x) - float64(player_x)) / (float64(player_y) - float64(monster.pos_y)))
-		// 		calc_angle = 180.0 + (arctan * 180.0 / math.Pi)
-		// 	} else {
-		// 		arctan := math.Atan((float64(monster.pos_x) - float64(player_x)) / (float64(monster.pos_y) - float64(player_y)))
-		// 		calc_angle = 360 - (arctan * 180.0 / math.Pi)
-		// 	}
-		// }
-
 		arctan := math.Atan((float64(player_x) - float64(monster.pos_x)) / (float64(monster.pos_y) - float64(player_y)))
 		calc_angle = arctan * 180.0 / math.Pi
 
@@ -92,26 +69,26 @@ func (monster *Monster)UpdatePosition(player *Player) {
 	}
 
 	if calc_angle < 180.0 {
-		monster.angle = float32(calc_angle) + 180.0
+		monster.angleDeg = float32(calc_angle) + 180.0
 	} else {
-		monster.angle = float32(calc_angle) - 180.0
+		monster.angleDeg = float32(calc_angle) - 180.0
 	}
 
-	vel_x := float64(MONSTER_VELOCITY) * math.Sin(calc_angle * math.Pi / 180.0)
-	vel_y := (-1.0) * float64(MONSTER_VELOCITY) * math.Cos(calc_angle * math.Pi / 180.0)
+	vel_x := float64(MONSTER_VELOCITY) * math.Sin(calc_angle*math.Pi/180.0)
+	vel_y := (-1.0) * float64(MONSTER_VELOCITY) * math.Cos(calc_angle*math.Pi/180.0)
 
 	monster.pos_x += float32(vel_x)
 	monster.pos_y += float32(vel_y)
 
 	if monster.pos_x < 50 {
 		monster.pos_x = 50
-	} else if monster.pos_x > float32(MAP_WIDTH) - 50 - float32(MONSTER_WIDTH) {
+	} else if monster.pos_x > float32(MAP_WIDTH)-50-float32(MONSTER_WIDTH) {
 		monster.pos_x = float32(MAP_WIDTH) - 50 - float32(MONSTER_WIDTH)
 	}
 
 	if monster.pos_y < 50 {
 		monster.pos_y = 50
-	} else if monster.pos_y > float32(MAP_HEIGHT) - 50 - float32(MONSTER_HEIGHT) {
+	} else if monster.pos_y > float32(MAP_HEIGHT)-50-float32(MONSTER_HEIGHT) {
 		monster.pos_y = float32(MAP_HEIGHT) - 50 - float32(MONSTER_HEIGHT)
 	}
 }

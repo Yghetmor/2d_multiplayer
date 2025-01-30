@@ -8,27 +8,25 @@ import (
 )
 
 type Player struct {
-	id uint8
+	id         uint8
 	connection net.Conn
-	pos_x float32
-	pos_y float32
-	angle float32
-	health uint8
+	pos_x      float32
+	pos_y      float32
+	angle      float32
+	health     uint8
 }
 
-func NewPlayer(id uint8, connection net.Conn) *Player {
-	new_player := Player{}
-	new_player.id = id
-	new_player.connection = connection
-	new_player.pos_x = float32(MAP_WIDTH / 2)
-	new_player.pos_y = float32(MAP_HEIGHT / 2)
-	new_player.angle = 0
-	new_player.health = uint8(PLAYER_HEALTH)
-
-	return &new_player
+func NewPlayer(id uint8, connection net.Conn) Player {
+	return Player{
+		id:         id,
+		connection: connection,
+		pos_x:      float32(MAP_WIDTH / 2),
+		pos_y:      float32(MAP_HEIGHT / 2),
+		health:     uint8(PLAYER_HEALTH),
+	}
 }
 
-func (player *Player)Format() (*bytes.Buffer, error) {
+func (player Player) bufferFormat() (*bytes.Buffer, error) {
 	buf := new(bytes.Buffer)
 	err := buf.WriteByte(byte('*'))
 	if err != nil {
@@ -58,7 +56,7 @@ func (player *Player)Format() (*bytes.Buffer, error) {
 	return buf, nil
 }
 
-func (player *Player)UpdatePosition(buf_in []byte) error {
+func (player *Player) UpdatePosition(buf_in []byte) error {
 	reader := bytes.NewReader(buf_in)
 
 	var data struct {

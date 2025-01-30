@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	instances_map := make(map[int] chan net.Conn)
+	instances_map := make(map[int]chan net.Conn)
 
 	listener, err := net.Listen("tcp", "localhost:6969")
 	if err != nil {
@@ -30,7 +30,7 @@ func main() {
 	}
 }
 
-func handleClient(conn net.Conn, instances_map *map[int] chan net.Conn) {
+func handleClient(conn net.Conn, instances_map *map[int]chan net.Conn) {
 	buf := make([]byte, 256)
 	for {
 		n, err := conn.Read(buf)
@@ -39,7 +39,7 @@ func handleClient(conn net.Conn, instances_map *map[int] chan net.Conn) {
 			conn.Close()
 			return
 		}
-		
+
 		if n == 4 {
 			break
 		}

@@ -40,18 +40,18 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 		log.Println("Couldn't listen to UDP : ", err)
 		return
 	}
-	defer udpConn.Close() 
+	defer udpConn.Close()
 
 	start_time := time.Now()
 	// monster_start_time := time.Now()
 
-	monsters = append(monsters, NewMonster(float32(MAP_WIDTH) - 100, float32(MAP_HEIGHT) - 100))
+	monsters = append(monsters, NewMonster(float32(MAP_WIDTH)-100, float32(MAP_HEIGHT)-100))
 
 	for {
 		elapsed_time := time.Since(start_time).Milliseconds()
-		// monster_spawn_time := time.Since(monster_start_time).Seconds() 
+		// monster_spawn_time := time.Since(monster_start_time).Seconds()
 
-		if elapsed_time > 1000 / int64(FPS) {
+		if elapsed_time > time.Second.Milliseconds()/int64(FPS) {
 
 			player_new_pos_buf := make([]byte, 1024)
 			n, retAddr, err := udpConn.ReadFromUDP(player_new_pos_buf)
@@ -72,8 +72,8 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 			var output_infos []byte
 
 			for _, monster := range monsters {
-				(*monster).UpdatePosition(player)
-				formatted, err := (*monster).Format()
+				monster.UpdatePosition(player)
+				formatted, err := monster.bufferFormat()
 				if err != nil {
 					log.Println("Error while formatting monster : ", err)
 					continue
@@ -82,8 +82,8 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 				output_infos = slices.Concat(output_infos, formatted.Bytes())
 			}
 			for _, projectile := range projectiles {
-				(*projectile).UpdatePosition()
-				formatted, err := (*projectile).Format()
+				projectile.UpdatePosition()
+				formatted, err := projectile.bufferFormat()
 				if err != nil {
 					log.Println("Error while formatting projectile : ", err)
 					continue
