@@ -63,10 +63,14 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 				log.Println("Couldn't receive from player connection : ", err)
 			}
 
-			if n == 5 {
+			if n == 7 {
 				player.UpdatePosition(player_new_pos_buf)
 			} else {
-				log.Println("Couldn't update player position : did not receive 5 bytes")
+				log.Println("Couldn't update player position : did not receive 7 bytes")
+			}
+
+			if player.click == true {
+				projectiles = append(projectiles, NewProjectile(player.pos_x, player.pos_y, player.angleDeg))
 			}
 
 			var output_infos []byte
@@ -82,13 +86,18 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 				output_infos = slices.Concat(output_infos, formatted.Bytes())
 			}
 			for _, projectile := range projectiles {
-				projectile.UpdatePosition()
-				formatted, err := projectile.bufferFormat()
-				if err != nil {
-					log.Println("Error while formatting projectile : ", err)
-					continue
+				if projectile.alive == false {
+					projectile = nil
 				}
-				output_infos = slices.Concat(output_infos, formatted.Bytes())
+				if projectile != nil {
+					projectile.UpdatePosition()
+					formatted, err := projectile.bufferFormat()
+					if err != nil {
+						log.Println("Error while formatting projectile : ", err)
+						continue
+					}
+					output_infos = slices.Concat(output_infos, formatted.Bytes())
+				}
 			}
 
 			output_with_len := new(bytes.Buffer)

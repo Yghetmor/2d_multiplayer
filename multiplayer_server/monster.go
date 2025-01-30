@@ -40,7 +40,7 @@ func (monster Monster) bufferFormat() (*bytes.Buffer, error) {
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}
-	err = binary.Write(buf, binary.LittleEndian, uint8(monster.angleDeg))
+	err = binary.Write(buf, binary.LittleEndian, uint16(monster.angleDeg))
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}

@@ -14,7 +14,9 @@ public:
     void update_position(Camera* camera);
     void handle_event(SDL_Event& e);
     double get_angle();
-    std::vector<char> format_position();
+    std::vector<unsigned char> format_position();
+    void reset_clicked();
+    bool is_clicked();
 
 private:
     static const unsigned int s_init_pos_x = MAP_WIDTH / 2;
@@ -23,6 +25,7 @@ private:
     static const unsigned int s_height = 40;
     static const unsigned int s_velocity = 5;
 
+    bool m_clicked{ false };
 };
 
 #endif // !PLAYER_H

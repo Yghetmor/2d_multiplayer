@@ -63,6 +63,7 @@ void OnlineGame::gameLoop()
     {
         m_monsters.clear();
         m_projectiles.clear();
+        m_player->reset_clicked();
 
         handleEvent();
         m_player->update_position(&m_camera);
@@ -70,6 +71,9 @@ void OnlineGame::gameLoop()
 
         send_player_pos(udp_socket);
         unpack_positions(udp_socket);
+
+        std::cout << "Nb of projectiles : " << m_projectiles.size() << std::endl;
+        
         draw();
     }
 
@@ -95,7 +99,7 @@ void OnlineGame::unpack_positions(int socket)
 {
     uint8_t buf[1024];
     int rec_count = recv(socket, &buf, sizeof(buf), 0);
-    while (rec_count < 6)
+    while (rec_count < 2)
     {
         rec_count += recv(socket, &buf + rec_count, sizeof(buf) - rec_count, 0);
     }
@@ -134,7 +138,7 @@ void OnlineGame::unpack_monster(uint8_t **buf)
     uint16_t pos_x;
     uint16_t pos_y;
     uint8_t health;
-    uint8_t angle;
+    uint16_t angle;
 
     pos_x = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>((*((*buf) + 1))) << 8);
     *buf += 2;
@@ -142,8 +146,8 @@ void OnlineGame::unpack_monster(uint8_t **buf)
     *buf += 2;
     health = (uint8_t)(**buf);
     *buf += 1;
-    angle = (uint8_t)(**buf);
-    *buf += 1;
+    angle = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>((*((*buf) + 1))) << 8);
+    *buf += 2;
 
     m_monsters.push_back(new Monster(pos_x, pos_y, m_monster_texture, angle, health));
 }
@@ -152,21 +156,22 @@ void OnlineGame::unpack_projectile(uint8_t **buf)
 {
     uint16_t pos_x;
     uint16_t pos_y;
-    uint8_t angle;
+    uint16_t angle;
 
     pos_x = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>(*((*buf) + 1)) << 8);
     *buf += 2;
     pos_y = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>(*((*buf) + 1)) << 8);
     *buf += 2;
-    angle = (uint8_t)(**buf);
-    *buf += 1;
+    angle = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>(*((*buf) + 1)) << 8);
+    *buf += 2;
 
     m_projectiles.push_back(new Projectile(pos_x, pos_y, angle, m_projectile_texture));
 }
 
 void OnlineGame::send_player_pos(int socket)
 {
-    std::vector<char> player_info = m_player->format_position();
+    std::vector<unsigned char> player_info = m_player->format_position();
+    player_info.push_back(m_player->is_clicked());
     if (send(socket, &player_info[0], player_info.size(), 0) != player_info.size())
     {
         std::cout << "Error sending player info to server" << std::endl;

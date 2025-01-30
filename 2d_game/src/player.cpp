@@ -119,6 +119,11 @@ void Player::handle_event(SDL_Event& e)
             case SDLK_d: m_vel_x -= m_entity_velocity; break;
         }
     }
+
+    else if (e.type == SDL_MOUSEBUTTONDOWN && e.button.button == SDL_BUTTON_LEFT)
+    {
+        m_clicked = true;
+    }
 }
 
 double Player::get_angle()
@@ -126,30 +131,30 @@ double Player::get_angle()
     return m_angle;
 }
 
-std::vector<char> Player::format_position()
+std::vector<unsigned char> Player::format_position()
 {
-    std::vector<char> output;
+    std::vector<unsigned char> output;
     uint16_t pos_x = static_cast<uint16_t>(m_pos_x) + static_cast<uint16_t>(m_width) / 2;
     uint16_t pos_y = static_cast<uint16_t>(m_pos_y) + static_cast<uint16_t>(m_height) / 2;
-    uint8_t angle = static_cast<uint8_t>(angle);
+    uint16_t angle = static_cast<uint16_t>(m_angle);
 
     if (std::endian::native == std::endian::little)
     {
-        char *byte = (char*)&pos_x;
+        unsigned char *byte = (unsigned char*)&pos_x;
         for (size_t i{}; i < sizeof(pos_x); i++)
         {
             output.push_back(*byte);
             byte++;
         }
 
-        byte = (char*)&pos_y;
+        byte = (unsigned char*)&pos_y;
         for (size_t i{}; i < sizeof(pos_y); i++)
         {
             output.push_back(*byte);
             byte++;
         }
 
-        byte = (char*)&angle;
+        byte = (unsigned char*)&angle;
         for (size_t i{}; i < sizeof(angle); i++)
         {
             output.push_back(*byte);
@@ -161,4 +166,14 @@ std::vector<char> Player::format_position()
 
     }
     return output;
+}
+
+void Player::reset_clicked()
+{
+    m_clicked = false;
+}
+
+bool Player::is_clicked()
+{
+    return m_clicked;
 }

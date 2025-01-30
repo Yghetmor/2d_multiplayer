@@ -40,15 +40,15 @@ func (projectile Projectile) bufferFormat() (*bytes.Buffer, error) {
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}
-	err = binary.Write(buf, binary.LittleEndian, float32(projectile.pos_x))
+	err = binary.Write(buf, binary.LittleEndian, uint16(projectile.pos_x))
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}
-	err = binary.Write(buf, binary.LittleEndian, float32(projectile.pos_y))
+	err = binary.Write(buf, binary.LittleEndian, uint16(projectile.pos_y))
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}
-	err = binary.Write(buf, binary.LittleEndian, uint8(projectile.angleDeg))
+	err = binary.Write(buf, binary.LittleEndian, uint16(projectile.angleDeg))
 	if err != nil {
 		return nil, errors.New("binary write into buffer failed")
 	}
