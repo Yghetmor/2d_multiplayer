@@ -72,8 +72,6 @@ void OnlineGame::gameLoop()
         send_player_pos(udp_socket);
         unpack_positions(udp_socket);
 
-        std::cout << "Nb of projectiles : " << m_projectiles.size() << std::endl;
-        
         draw();
     }
 
@@ -137,14 +135,14 @@ void OnlineGame::unpack_monster(uint8_t **buf)
 {
     uint16_t pos_x;
     uint16_t pos_y;
-    uint8_t health;
+    int8_t health;
     uint16_t angle;
 
     pos_x = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>((*((*buf) + 1))) << 8);
     *buf += 2;
     pos_y = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>((*((*buf) + 1))) << 8);
     *buf += 2;
-    health = (uint8_t)(**buf);
+    health = (int8_t)(**buf);
     *buf += 1;
     angle = static_cast<uint16_t>(**buf) + (static_cast<uint16_t>((*((*buf) + 1))) << 8);
     *buf += 2;

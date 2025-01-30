@@ -11,14 +11,15 @@ type Monster struct {
 	pos_x    float32
 	pos_y    float32
 	angleDeg float32
-	health   uint8
+	health   int8
+	isDead bool
 }
 
 func NewMonster(pos_x float32, pos_y float32) *Monster {
 	return &Monster{
 		pos_x:  pos_x,
 		pos_y:  pos_y,
-		health: uint8(MONSTER_HEALTH),
+		health: int8(MONSTER_HEALTH),
 	}
 }
 

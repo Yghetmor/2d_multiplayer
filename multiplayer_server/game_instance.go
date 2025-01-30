@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
+func startInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 	player := NewPlayer(1, player_conn)
 	monsters := []*Monster{}
 	projectiles := []*Projectile{}
@@ -73,23 +73,26 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 				projectiles = append(projectiles, NewProjectile(player.pos_x, player.pos_y, player.angleDeg))
 			}
 
+			projectileCollisions(&monsters, &projectiles)
+
 			var output_infos []byte
 
 			for _, monster := range monsters {
-				monster.UpdatePosition(player)
-				formatted, err := monster.bufferFormat()
-				if err != nil {
-					log.Println("Error while formatting monster : ", err)
-					continue
-				}
+				if monster.isDead == false {
+					monster.UpdatePosition(player)
 
-				output_infos = slices.Concat(output_infos, formatted.Bytes())
-			}
-			for _, projectile := range projectiles {
-				if projectile.alive == false {
-					projectile = nil
+					formatted, err := monster.bufferFormat()
+					if err != nil {
+						log.Println("Error while formatting monster : ", err)
+						continue
+					}
+
+					output_infos = slices.Concat(output_infos, formatted.Bytes())
 				}
-				if projectile != nil {
+			}
+
+			for _, projectile := range projectiles {
+				if projectile.isDead == false {
 					projectile.UpdatePosition()
 					formatted, err := projectile.bufferFormat()
 					if err != nil {
@@ -128,5 +131,27 @@ func StartInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 		//
 		// 	monster_start_time = time.Now()
 		// }
+	}
+}
+
+func projectileCollisions(monsters *[]*Monster, projectiles *[]*Projectile) {
+	for _, projectile := range *projectiles {
+		if projectile.isDead == false {
+			projectile_center_x := int32(projectile.pos_x) + int32(PROJECTILE_WIDTH) / 2
+			projectile_center_y := int32(projectile.pos_y) + int32(PROJECTILE_HEIGHT) / 2
+
+			for _, monster := range *monsters {
+				if monster.health > 0 {
+					if projectile_center_x < int32(monster.pos_x) + int32(MONSTER_WIDTH) && projectile_center_x > int32(monster.pos_x) && projectile_center_y < int32(monster.pos_y) + int32(MONSTER_HEIGHT) && projectile_center_y > int32(monster.pos_y) {
+						monster.health -= int8(PROJECTILE_DAMAGE)
+						projectile.isDead = true
+					}
+
+					if monster.health <= 0 {
+						monster.isDead = true
+					}
+				}
+			}
+		}
 	}
 }

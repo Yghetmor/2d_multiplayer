@@ -13,7 +13,7 @@ type Projectile struct {
 	vel_x    float32
 	vel_y    float32
 	angleDeg float32
-	alive    bool
+	isDead    bool
 }
 
 func NewProjectile(pos_x float32, pos_y float32, angle float32) *Projectile {
@@ -30,7 +30,6 @@ func NewProjectile(pos_x float32, pos_y float32, angle float32) *Projectile {
 		vel_x:    float32(PROJECTILE_VELOCITY) * float32(math.Sin(float64(calc_angle)*math.Pi/180.0)),
 		vel_y:    (-1) * float32(PROJECTILE_VELOCITY) * float32(math.Cos(float64(calc_angle)*math.Pi/180.0)),
 		angleDeg: angle,
-		alive:    true,
 	}
 }
 
@@ -61,6 +60,6 @@ func (projectile *Projectile) UpdatePosition() {
 	projectile.pos_y += projectile.vel_y
 
 	if projectile.pos_x < 50 || projectile.pos_x > float32(MAP_WIDTH)-50-float32(PROJECTILE_WIDTH) || projectile.pos_y < 50 || projectile.pos_y > float32(MAP_HEIGHT)-50-float32(PROJECTILE_HEIGHT) {
-		projectile.alive = false
+		projectile.isDead = true
 	}
 }

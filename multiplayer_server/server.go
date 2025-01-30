@@ -60,6 +60,6 @@ func handleClient(conn net.Conn, instances_map *map[int]chan net.Conn) {
 	} else {
 		(*instances_map)[int(session_number)] = make(chan net.Conn)
 		log.Println("Creating instance no : ", session_number)
-		go StartInstance((*instances_map)[int(session_number)], conn)
+		go startInstance((*instances_map)[int(session_number)], conn)
 	}
 }
