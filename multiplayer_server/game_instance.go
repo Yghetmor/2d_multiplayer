@@ -12,8 +12,8 @@ import (
 
 func startInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 	player := NewPlayer(1, player_conn)
-	monsters := []Monster{}
-	projectiles := []Projectile{}
+	monsters := make([]Monster, 0, ENTITY_SLICE_CAPACITY)
+	projectiles := make([]Projectile, 0, ENTITY_SLICE_CAPACITY)
 
 	// var udp_port uint16 = 60000
 	// udp_port_bytes := new(bytes.Buffer)
@@ -52,6 +52,18 @@ func startInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 		// monster_spawn_time := time.Since(monster_start_time).Seconds()
 
 		if elapsed_time > time.Second.Milliseconds()/int64(FPS) {
+
+			if len(monsters) >= ENTITY_SLICE_CAPACITY {
+				monsters = slices.DeleteFunc(monsters, func(monster Monster) bool {
+					return monster.Dead()
+				})
+			}
+
+			if len(projectiles) >= ENTITY_SLICE_CAPACITY {
+				projectiles = slices.DeleteFunc(projectiles, func(projectile Projectile) bool {
+					return projectile.Dead()
+				})
+			}
 
 			player_new_pos_buf := make([]byte, 1024)
 			n, retAddr, err := udpConn.ReadFromUDP(player_new_pos_buf)

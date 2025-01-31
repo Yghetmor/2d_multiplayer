@@ -93,3 +93,11 @@ func (monster *Monster) UpdatePosition(player Player) {
 		monster.pos_y = float32(MAP_HEIGHT) - 50 - float32(MONSTER_HEIGHT)
 	}
 }
+
+func (monster Monster) Dead() bool {
+	if monster.health <= 0 {
+		return true
+	} else {
+		return false
+	}
+}

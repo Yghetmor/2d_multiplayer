@@ -63,3 +63,7 @@ func (projectile *Projectile) UpdatePosition() {
 		projectile.isDead = true
 	}
 }
+
+func (projectile Projectile) Dead() bool {
+	return projectile.isDead
+}
