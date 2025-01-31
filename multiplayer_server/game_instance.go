@@ -12,8 +12,8 @@ import (
 
 func startInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 	player := NewPlayer(1, player_conn)
-	monsters := []*Monster{}
-	projectiles := []*Projectile{}
+	monsters := []Monster{}
+	projectiles := []Projectile{}
 
 	// var udp_port uint16 = 60000
 	// udp_port_bytes := new(bytes.Buffer)
@@ -77,7 +77,8 @@ func startInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 
 			var output_infos []byte
 
-			for _, monster := range monsters {
+			for i, _ := range monsters {
+				monster := &monsters[i]
 				if monster.isDead == false {
 					monster.UpdatePosition(player)
 
@@ -91,7 +92,8 @@ func startInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 				}
 			}
 
-			for _, projectile := range projectiles {
+			for i := range projectiles {
+				projectile := &projectiles[i]
 				if projectile.isDead == false {
 					projectile.UpdatePosition()
 					formatted, err := projectile.bufferFormat()
@@ -134,13 +136,15 @@ func startInstance(conn_in_channel chan net.Conn, player_conn net.Conn) {
 	}
 }
 
-func projectileCollisions(monsters *[]*Monster, projectiles *[]*Projectile) {
-	for _, projectile := range *projectiles {
+func projectileCollisions(monsters *[]Monster, projectiles *[]Projectile) {
+	for i := range *projectiles {
+		projectile := &(*projectiles)[i]
 		if projectile.isDead == false {
 			projectile_center_x := int32(projectile.pos_x) + int32(PROJECTILE_WIDTH) / 2
 			projectile_center_y := int32(projectile.pos_y) + int32(PROJECTILE_HEIGHT) / 2
 
-			for _, monster := range *monsters {
+			for j := range *monsters {
+				monster := &(*monsters)[j]
 				if monster.health > 0 {
 					if projectile_center_x < int32(monster.pos_x) + int32(MONSTER_WIDTH) && projectile_center_x > int32(monster.pos_x) && projectile_center_y < int32(monster.pos_y) + int32(MONSTER_HEIGHT) && projectile_center_y > int32(monster.pos_y) {
 						monster.health -= int8(PROJECTILE_DAMAGE)

@@ -16,7 +16,7 @@ type Projectile struct {
 	isDead    bool
 }
 
-func NewProjectile(pos_x float32, pos_y float32, angle float32) *Projectile {
+func NewProjectile(pos_x float32, pos_y float32, angle float32) Projectile {
 	var calc_angle float32 = 0.0
 	if angle < 180.0 {
 		calc_angle = angle + 180.0
@@ -24,7 +24,7 @@ func NewProjectile(pos_x float32, pos_y float32, angle float32) *Projectile {
 		calc_angle = angle - 180.0
 	}
 
-	return &Projectile{
+	return Projectile{
 		pos_x:    pos_x,
 		pos_y:    pos_y,
 		vel_x:    float32(PROJECTILE_VELOCITY) * float32(math.Sin(float64(calc_angle)*math.Pi/180.0)),

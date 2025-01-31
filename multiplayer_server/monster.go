@@ -15,8 +15,8 @@ type Monster struct {
 	isDead bool
 }
 
-func NewMonster(pos_x float32, pos_y float32) *Monster {
-	return &Monster{
+func NewMonster(pos_x float32, pos_y float32) Monster {
+	return Monster{
 		pos_x:  pos_x,
 		pos_y:  pos_y,
 		health: int8(MONSTER_HEALTH),
